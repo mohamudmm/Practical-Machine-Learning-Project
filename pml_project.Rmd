@@ -28,7 +28,7 @@ pml_test <- read.csv("pml-testing.csv",na.strings=c("#DIV/0!","NA"))
 ```
 Next we impute the missing values with the mean of the feature.
 
-```{r cache=TRUE}
+```{r }
 
 for (i in which(sapply(pml_train, is.numeric))) {
     pml_train[is.na(pml_train[, i]), i] <- mean(pml_train[, i],  na.rm = TRUE)
@@ -57,7 +57,7 @@ First all the features with zero or near zero variance were identified and remov
 
 Secondly those features denoting times of exercise,participant's name,or serial numbers given to participants were removed.
 
-```{r cache=TRUE}
+```{r }
 #remove the features with zero and near zero variances
 nzv <- nearZeroVar(pml_train)
 filtered_pml_train <- pml_train[,-nzv]
@@ -80,7 +80,7 @@ the prediction model.The primary goal of this project is to build a model that p
 Since this is a classification problem I chose a tree based method the Generalized Boosting Model(gbm).
 
 
-```{r cache=TRUE,results='hide'}
+```{r results='hide'}
 set.seed(1217)
 Intrain <- createDataPartition(filtered_pml_train$classe,p=0.7,list=FALSE)
 filtTrain <- filtered_pml_train[Intrain,]
@@ -93,7 +93,7 @@ After the test method was developed it was applied to the cross-validation set t
 The model developed in this project has an accuray of 
 0.962 with 95% CI(0.958,0.966) and p-value of 0 and thus is statistically significant.
 The predicted accuracy was borne by the result of applying the model to the 20 test cases where it correctly predicted all of them.
-```{r cache = TRUE}
+```{r }
 confusionMatrix(predictions,filtTest$classe)
 testpredictions <- predict(fit1,filtered_pml_test)
 testpredictions
